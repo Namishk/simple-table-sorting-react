@@ -27,7 +27,7 @@ const Table = () => {
     if (sortedField !== null) {
         sortedData = [...transData];
         console.log(transData);
-        let x = sortedData.sort((a, b) => {
+        sortedData.sort((a, b) => {
             if (a[sortedField] < b[sortedField]) {
                 return -1;
             }
