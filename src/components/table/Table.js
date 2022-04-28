@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { useTable } from "react-table";
 
 const Table = () => {
     
@@ -22,11 +23,11 @@ const Table = () => {
         fetchdata();
     }, []);
     
-    console.log(sortedField)
+    // console.log(sortedField)
     let sortedData = '';
     if (sortedField !== null) {
         sortedData = [...transData];
-        console.log(transData);
+        // console.log(transData);
         sortedData.sort((a, b) => {
             if (a[sortedField] < b[sortedField]) {
                 return -1;
@@ -41,13 +42,59 @@ const Table = () => {
     }
 
 
+    const columns = useMemo(() => (
+        [
+            {
+                Header : "Disclosure Year",
+                accessor: "disclosure_year"
+            },
+            {
+                Header : "Ticker",
+                accessor : "ticker"
+            },
+            {
+                Header : "Representative",
+                accessor : "representative"
+            },
+            {
+                Header : "District",
+                accessor : "district"
+            },
+            {
+                Header : "Type",
+                accessor : "type"
+            }
+        ]
+    ), []);
+
+    const data = useMemo(() => {
+        if(transData == null) return null;
+        else{
+            return transData.map(
+            ({disclosure_year, ticker, representative, district, type}) =>  
+            ({disclosure_year, ticker, representative, district, type}))
+        }
+    }, [transData]);
+
+    
+    
+    
+    //     const {
+    //         getTableProps,
+    //         getTableBodyProps,
+    //         headerGroups,
+    //         footerGroups,
+    //         rows,
+    //         prepareRow
+    //     } = useTable({columns, data}, [transData]);
+
     if(transData === null){
         return(<h1>loading</h1>);
     }
 
-    return(
+    if(transData !== null) return(
 
-    <table className="min-w-full table-auto">
+    <table border = {1} className="min-w-full table-auto">
         <thead>
             <tr>
                 <th>
